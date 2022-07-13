@@ -1,7 +1,8 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
+const Schema  = mongoose.Schema;
 
-const userSchema = mongoose.Schema(
+const userSchema = new Schema(
   {
     name: {
       type: String,
@@ -60,6 +61,10 @@ const userSchema = mongoose.Schema(
       type: Number,
       enum: [1, 2, 3],
     },
+    posts:[{
+        type:Schema.Types.ObjectId,
+        ref:'Post'
+    }], 
     created_at : {
        type: Date, required: true, default: Date.now 
       },

@@ -11,29 +11,30 @@ const StyledProfile = styled.div`
 `
 
 
-const ViewProfile = () => {
+const ViewProfile = ({p}) => {
     const { id } = useParams();
     const [user, setUser] = useState([]);
-    const [blog, setBlog] = useState([]);
+    const [posts, setPosts] = useState([]);
+  
+
+   useEffect(()=>{
+    const getPosts = async () =>{
+    const {data} = await axios.get(`/api/posts/getbypostid/${p}`);
+     console.log(data);
+    }
+    getPosts();
+   },[])
 
     useEffect(() => {
         const getUser = async () => {
-            const { data } = await axios.get(`/api/users/${id}`);
+            const { data } = await axios.get(`/api/users/userbyid/${id}`);
             console.log(data);
-            setUser(data);
+            console.log(data.posts);
+            setPosts(data.posts);
+            setUser([data]);
         }
         getUser();
     },[]) 
-    useEffect(() => {
-        const getBlog = async () => {
-            const { data } = await axios.get(`/api/users/getblogbyuser/${id}`);
-            console.log(data.blogs.blogs);
-            setBlog(data.blogs.blogs);
-        }
-        getBlog();
-    },[]) 
-    console.log(user);
-    console.log(blog);
 
     return(
         <>
@@ -111,22 +112,25 @@ const ViewProfile = () => {
                             </div>
                             </div>
                             <div className="col-md-9 p-5 " style={{"overflow-y": "auto", height: "60vh", border: "none"}}>
-                            {
-                blog.map(blog => {
-                    return(
-                        <div className="mb-5">
-                            <h5>Title: {blog.title}</h5>
-                            <div style={{"maxWidth":"60vh"}}>
-                              <p>{blog.article}</p>
-                            </div>
-                            <div className="col-md-1 d-flex  ">
-                            <i class="bi bi-suit-heart"></i>
-                            <p className="mx-2">5</p>    
-                            </div> 
-                        </div>
-                    )
-                })
-             }
+                                <div>
+                               {
+                                    posts.map((post, index) =>{
+                                        return(
+                                            <div className="row justify-content-start " key={index}>
+                                                <div className="col-md-12 p-2 d-flex flex-column  ">
+                                                    <div className="d-flex flex-row  justify-content-between  my-2">
+                                                        <h5>{post.title}</h5>
+                                                        <p>{moment(post.date).format("MMM Do YYYY")}</p>
+                                                    </div>
+                                                    <div className="d-flex flex-column  justify-content-center  my-2">
+                                                        <p>{post.article}</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        )
+                                    })
+                               }
+                                </div>
                             </div>
                         </div>
                     </StyledProfile>

@@ -107,14 +107,14 @@ const FetchAllUsers = () => {
                             <NavLink to={`/viewprofile/${users._id}`}>
                             <button type="button" class="btn btn-secondary p-2 mx-1">View Profile</button>
                             </NavLink>
-                            <NavLink to={`/followunfollow/${users._id}`}>
+                            <NavLink to={`/viewprofile/${users._id}`}>
                             <button type="button" class="btn btn-secondary p-2 mx-1">Follow</button>
                             </NavLink>
                     </StyledProfile>
                 )
             }) 
       )}
-           
+          
        </>
     )
 }

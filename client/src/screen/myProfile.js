@@ -2,11 +2,12 @@ import {React} from "react";
 import  {useEffect, useState, Fragment} from "react";
 import { NavLink } from 'react-router-dom';
 import axios from "axios";
-// import { useParams } from "react-router";
 import styled from "styled-components";
 import moment from "moment"; 
 import { HomeContainer } from "./styled/Home.styled";
 import AddPost from "./addPost";
+
+
 
 
 const StyledProfile = styled.div`
@@ -14,19 +15,20 @@ const StyledProfile = styled.div`
 `
 
 const MyProfile = () => {
-   const auth = localStorage.getItem("userInfo");
+    const auth = localStorage.getItem("userInfo");
     const [User, setUser] = useState([]);
-    // const params = useParams();
-  
+
+    
    useEffect(()=>{
-        const getUser = async () =>{
-        const {data} = await axios.get(`/api/users/${JSON.parse(auth)._id}`);
-         console.log(data);
-         setUser(data);
-        }
-        getUser();
-   },[])
- 
+    const getUser = async () =>{
+    const {data} = await axios.get(`/api/users/userbyid/${JSON.parse(auth)._id}`);
+     console.log(data);
+     setUser([data]);
+    }
+    getUser();
+  },[])
+
+
       //  **********************************UPDATE**********************************************
    
       const updatePhone = async (id) =>{
@@ -89,7 +91,7 @@ const MyProfile = () => {
          {
             User.map((users, index) =>{
                 return(
-                    <StyledProfile className="container mt-5 py-3" key={index}>
+                    <StyledProfile className="container mt-5 py-3 p-4" key={index}>
                         <div className="row justify-content-start ">
                             <div className="col-md-3  p-2 d-flex flex-column  ">
                                 <div>

@@ -1,15 +1,17 @@
 const express = require('express');
 const router = express.Router();
-const {addBlog, updateById, updateLikes, getById, getEverythings } = require('../controllers/postController');
+const { updateById, updateLikes, getById, getEverythings,makePostByUser,fetchAllPosts} = require('../controllers/postController');
 
 
 
 
 
-router.route("/").post(addBlog);
+
 router.route("/:id").put(updateById);
 router.route("/:id/likes").put(updateLikes);
-router.route("/:id").get(getById);
-router.route("/all").get(getEverythings);
+router.route("/getbypostid/:id").get(getById);
+router.route("/timeline/:userid").get(getEverythings);
+router.route("/makepostbyuserid/:id").post(makePostByUser);  
+router.route("/fetchallposts").get(fetchAllPosts);  
 
 module.exports = router;

@@ -85,10 +85,12 @@ const authUser = asyncHandler(async(req,res)=>{
   
  
   const getUserById = asyncHandler(async(req,res)=>{
-    const {id} = req.params;
-    const data = await User.findById(id);
-    console.log(data)
-    res.send([data]);
+    try {
+      const users = await User.findById(req.params.id).populate("posts");
+       return res.status(200).json(users);
+  } catch (error) {
+     return res.status(500).json(error);
+  }
   })
 
   const updateUser = asyncHandler(async(req,res)=>{

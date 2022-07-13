@@ -1,8 +1,8 @@
 import React from "react";
 import FetchAllUsers from "./FetchAllUsers";
-import FetchAllBlogs from "./FetchAllBlogs";
-import ViewProfile from "./ViewProfile";
+import AllPosts from "./AllPosts";
 import styled from "styled-components";
+
 
 const ProfileScroll = styled.div`
  ::-webkit-scrollbar {
@@ -20,6 +20,8 @@ const ProfileScroll = styled.div`
 `
 
 const HomeAndUsers = () => {
+
+ 
     return (
        <>
           
@@ -34,7 +36,7 @@ const HomeAndUsers = () => {
             
            
             <div className="col-md-8">
-              
+               <AllPosts/>
             </div>
           </div>
          </div>

@@ -1,20 +1,32 @@
  const express = require('express');
+ const mongoose = require('mongoose');
  const asyncHandler = require("express-async-handler");
-const User = require('../models/userModel');
-const Post = require('../models/postModel');
+ const User = require('../models/userModel');
+ const Post = require('../models/postModel');
 
 
-const addBlog = asyncHandler(async(req,res)=>{
+
+
+  // Make Post By UserId
+  const makePostByUser = asyncHandler(async(req,res)=>{
+    const {id}  = req.params;
     const newPost = new Post(req.body);
-    try {
-      const savedPost = await newPost.save();
-      res.status(200).json(savedPost);
-    } catch (err) {
-      res.status(500).json(err);
-    }
+    const user = await User.findById(id);
+
+    newPost.user = user;
+    await newPost.save();
+
+    user.posts.push(newPost);
+    await user.save();
+    res.status(201).json(newPost);
+  })
+ 
+// get all posts
+
+const fetchAllPosts = asyncHandler(async(req,res)=>{
+  const posts = await Post.find().populate('user');
+  res.status(200).json(posts);
 })
-
-
 //update a post*********************************************************
 const updateById = asyncHandler(async(req,res)=>{
     try {
@@ -63,18 +75,18 @@ const getById = asyncHandler(async(req,res)=>{
 // get all posts
  const getEverythings = asyncHandler(async(req,res)=>{
     try {
-        const currentUser = await User.findById(req.body.userId);
+        const currentUser = await User.findById(req.params.userid);
         const userPosts = await Post.find({ userId: currentUser._id });
         const friendPosts = await Promise.all(
           currentUser.followings.map((friendId) => {
-            return Post.find({ userId: friendId });
+             Post.find({ userId: friendId });
           })
         );
-        res.json(userPosts.concat(...friendPosts))
+       res.status(200).json(userPosts.concat(...friendPosts))
       } catch (err) {
         res.status(500).json(err);
       }
  })
 
 
-module.exports = {addBlog, updateById, updateLikes, getById, getEverythings};
+module.exports = { updateById, updateLikes, getById, getEverythings,makePostByUser,fetchAllPosts};
