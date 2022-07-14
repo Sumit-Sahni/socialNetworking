@@ -8,7 +8,7 @@ const generateToken = require("../util/generateToken");
 
 
   const registerUser = asyncHandler(async(req,res)=>{
-   const {name,email,password,pic,describe,phone, date, gender,college , about} = req.body;
+   const {name,email,password,pic,describe,date, gender,college , about} = req.body;
 
    const userExist = await User.findOne({email});
 
@@ -24,7 +24,6 @@ const generateToken = require("../util/generateToken");
         password,
         pic,
         describe,
-        phone,
         date,
         gender,
         college,
@@ -39,7 +38,6 @@ const generateToken = require("../util/generateToken");
                 isAdmin: user.isAdmin,
                 pic: user.pic,
                 describe: user.describe,
-                phone: user.phone,
                 data: user.date,
                 gender:user.gender,
                 college:user.college,
@@ -66,8 +64,6 @@ const authUser = asyncHandler(async(req,res)=>{
              email:user.email,
              isAdmin:user.isAdmin,
              pic:user.pic,
-             describe:user.describe,
-             phone:user.phone,
              token: generateToken(user._id),
          });
     }
@@ -112,12 +108,55 @@ const authUser = asyncHandler(async(req,res)=>{
 
    
 //  *****************************************FOLLOW/UNFOLLOW*******************************************************
-    
+  const followUser = asyncHandler(async(req,res)=>{
+    if(req.body.userId !== req.params.id ){
+      try {
+         const user = await User.findById(req.params.id);
+         const currentUser = await User.findById(req.body.userId);
+         if (!user.followers.includes(req.body.userId)) {
+             await user.updateOne({$push:{followers: req.body.userId}})
+             await currentUser.updateOne({$push:{followings: req.body.userId}})
+             return res.status(201).json("User has been followed");
+         } else {
+          return req.status(401).json("Alreay following");
+         } 
+      } catch (error) {
+          return req.status(500).json(error)
+      }
+ }
+ else{
+    console.log("You cant Follow Yourself")
+ }
+  })
+
+
+  const unfollowUser = asyncHandler(async(req,res)=>{
+    if(req.body.userId !== req.params.id ){
+      try {
+         const user = await User.findById(req.params.id);
+         const currentUser = await User.findById(req.body.userId);
+         if (user.followers.includes(req.body.userId)) {
+             await user.updateOne({$pull:{followers: req.body.userId}})
+             await currentUser.updateOne({$pull:{followings: req.body.userId}})
+             return res.status(200).json("User has been Unfollowed");
+         } else {
+          return req.status(401).json("Not Following");
+         } 
+      } catch (error) {
+          return req.status(500).json(error)
+      }
+ }
+ else{
+    console.log("You cant Follow Yourself")
+ }
+  })
 
 module.exports = {
     registerUser,
      authUser,
      getUser, 
      getUserById,
-     updateUser, 
+     updateUser,
+     followUser,
+     unfollowUser    
  };

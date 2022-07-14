@@ -44,11 +44,6 @@ const userSchema = new Schema(
       default:
         "https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg",
     },
-    phone: {
-      type: Number,
-      required: true,
-      default: 0, 
-    },
     followers: {
       type: Array,
       default: [],

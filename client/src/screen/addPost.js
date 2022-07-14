@@ -12,11 +12,10 @@ const AddPost = () => {
 
     const submitHandler =  async() => {
         const data = {
-            userId: JSON.parse(auth)._id, 
             title,
             article,
         }
-        await axios.post("/api/posts/", data);
+        await axios.post(`/api/posts/makepostbyuserid/${JSON.parse(auth)._id}`, data);
         console.log(data);
         setTitle("");
         setArticle("");
@@ -39,7 +38,7 @@ const AddPost = () => {
               </div>
               <div className="col-md-12">
               <div className="form-group ">
-             <label htmlFor="exampleFormControlTextarea1" className="mb-3">Describe Yourself in detail <span></span></label>
+             <label htmlFor="exampleFormControlTextarea1" className="mb-3">About above Title<span></span></label>
              <textarea className="form-control  " id="exampleFormControlTextarea1"  rows="10"  
                type="text"
                 value={article}

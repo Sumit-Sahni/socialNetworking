@@ -228,7 +228,7 @@ const RegisterScreen = () => {
             />
         </div>
         <div className="col-md-6">
-        <label htmlFor="confpassword" className="form-label">Password</label>
+        <label htmlFor="confpassword" className="form-label">CNF Password</label>
         <i style={{color:"red", fontSize:"8px"}} className="bi bi-asterisk mx-3"></i>
           <input  className="form-control w-50" id="confpassword"
                type="password" 
@@ -237,16 +237,6 @@ const RegisterScreen = () => {
                onChange={(e)=>setConform(e.target.value)}
             />
           </div>
-          <div className="col-md-6">
-          <label htmlFor="phoneNumber" className="form-label">Phone No.</label>
-          <i style={{color:"red", fontSize:"8px"}} className="bi bi-asterisk mx-3"></i>
-          <input  className="form-control w-50" id="phoneNumber"
-               type="text" 
-               value={phone}
-               placeholder="Phone No."
-               onChange={(e)=>setPhone(e.target.value)}
-            />
-          </div>   
     </div>
       <button type="submit" className="btn btn-primary my-4">Register</button>
       <NavLink to="/login"><button  className="btn btn-primary mx-2">Login</button></NavLink>

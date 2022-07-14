@@ -31,12 +31,7 @@ const MyProfile = () => {
 
       //  **********************************UPDATE**********************************************
    
-      const updatePhone = async (id) =>{
-        const newPhone = prompt("Enter new phone number");
-        await axios.put(`/api/users/${id}`,
-        {phone:newPhone,})
-
-      }
+     
       
       const updateGender = async (id) =>{
         const newGender = prompt("Enter your Gender");
@@ -101,14 +96,6 @@ const MyProfile = () => {
                                 <h5>Name: {users.name}</h5>
                                 <p>Email: {users.email}</p>
                                 <div className="row ">
-                                    <div className="col-md-12 d-flex flex-row  ">
-                                      <div>
-                                        <p className="  ">Phone: {users.phone}</p>
-                                      </div>
-                                        <div style={{cursor:'pointer'}}>
-                                          <i onClick={()=>updatePhone(users._id)} className="bi bi-pencil mx-5 text-primary" ></i>
-                                       </div>
-                                    </div>
                                 </div>
                                 <div className="row " >
                                     <div className="col-md-10 d-flex flex-row   ">

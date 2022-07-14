@@ -11,7 +11,7 @@ const Welcome = () => {
  const auth = localStorage.getItem("userInfo");
     return (
      <Fragment>
-      <nav className="navbar navbar-expand-lg bg-body p-5">
+      <nav className="navbar navbar-expand-lg bg-body p-4 ">
   <div className="container-fluid">
   <NavLink to={`myprofile/${JSON.parse(auth)._id}`} className="nav-link">{(JSON.parse(auth).name)}</NavLink>
     <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">

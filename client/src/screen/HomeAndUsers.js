@@ -15,8 +15,18 @@ const ProfileScroll = styled.div`
   background-color: rgba(179, 179, 179, 0.1);
   }
   overflow-y: scroll;
-  height: 80vh;
+  height: 65vh;
   bordr: none;
+
+  @media (max-width: 480px) {
+    height: 45vh;
+`
+const TimelineScroll = styled.div`
+  height: 75vh;
+  overflow-y: scroll;
+
+
+ 
 `
 
 const HomeAndUsers = () => {
@@ -24,22 +34,22 @@ const HomeAndUsers = () => {
  
     return (
        <>
-          
-         <div className="container">
+           <div className="container ">
           <div className="row">
-           
-            <div  className="col-md-4 col-12" >
+            <div  className="col-md-3  col-12" >
             <ProfileScroll>
                  <FetchAllUsers/>
                  </ProfileScroll>
             </div>
             
-           
-            <div className="col-md-8">
-               <AllPosts/>
+            <div className="col-md-6 col-lg-6 col-12 col-5 text-center ">
+                <h1>Timeline</h1>
+                <TimelineScroll>
+                  <AllPosts/>
+                </TimelineScroll>
             </div>
           </div>
-         </div>
+          </div>
        </>
     );
 }

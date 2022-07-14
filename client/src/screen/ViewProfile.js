@@ -12,18 +12,14 @@ const StyledProfile = styled.div`
 
 
 const ViewProfile = ({p}) => {
+    const auth = localStorage.getItem("userInfo");
     const { id } = useParams();
     const [user, setUser] = useState([]);
     const [posts, setPosts] = useState([]);
+    const [likes, setLikes] = useState("Like");
+
   
 
-   useEffect(()=>{
-    const getPosts = async () =>{
-    const {data} = await axios.get(`/api/posts/getbypostid/${p}`);
-     console.log(data);
-    }
-    getPosts();
-   },[])
 
     useEffect(() => {
         const getUser = async () => {
@@ -32,12 +28,32 @@ const ViewProfile = ({p}) => {
             console.log(data.posts);
             setPosts(data.posts);
             setUser([data]);
+            setLikes(true);
+         
         }
         getUser();
-    },[]) 
+    },[likes]) 
+
+   
+    
+   
+ 
+        const getLikes = async (id) =>{
+      const data = {
+        userId : JSON.parse(auth)._id,
+      }
+       await axios.put(`/api/posts/${id}/likes/`, data);
+       window.location.reload(); 
+        
+    }
+     
+   
+
+
 
     return(
         <>
+   
              <Fragment>
             <nav className="navbar navbar-expand-lg bg-body p-2 my-2">
   <div className="container-fluid">
@@ -69,15 +85,14 @@ const ViewProfile = ({p}) => {
                                 <img src={`${users.pic}`} alt={"img"} style={{width:"180px", height:"180px", borderRadius:"50%", objectFit:"cover"}}></img>
                                 </div>
                             <div className="d-flex flex-column  justify-content-center  my-2">
-                                <h5>Name: {users.name}</h5>
+                                <h5>{users.name}</h5>
                                 <p>Email: {users.email}</p>
                                 <div className="row " >
                                     <div className="col-md-10 d-flex flex-row   ">
                                       <div>
                                       <p >Gender: {users.gender}</p>
                                       </div>
-                                        <div  style={{cursor:'pointer'}}>
-                                                                               </div>
+                                        <div  style={{cursor:'pointer'}}> </div>
                                     </div>
                                 </div>
 
@@ -86,8 +101,7 @@ const ViewProfile = ({p}) => {
                                       <div>
                                       <p >D.O.B: {moment(users.date).format("MMM Do YYYY")}</p>
                                       </div>
-                                        <div  style={{cursor:'pointer'}}>
-                                                                             </div>
+                                        <div  style={{cursor:'pointer'}}> </div>                                                                           
                                     </div>
                                 </div>
                                 <div className="row ">
@@ -95,18 +109,32 @@ const ViewProfile = ({p}) => {
                                       <div >
                                         <p>About: {users.about}</p>
                                       </div>
-                                        <div  style={{cursor:'pointer'}}>
-                                                                              </div>
+                                        <div  style={{cursor:'pointer'}}></div>
                                     </div>
                                 </div>
                                 <div className="row">
-                                    <div className="col-md-12 d-flex flex-row   ">
+                                    <div className="col-md-12 d-flex flex-row ">
                                       <div>
                                         <p>College: {users.college}</p>
                                       </div>
-                                        <div  style={{cursor:'pointer'}}>
-                                         
-                                       </div>
+                                        <div  style={{cursor:'pointer'}}></div>
+                                    </div>
+                                </div> 
+
+                                <div className="row ">
+                                    <div className="col-md-12 d-flex flex-row ">
+                                      <div>
+                                        <p>Followers: {users.followers.length}</p>
+                                      </div>
+                                        <div style={{cursor:'pointer'}}></div>
+                                    </div>
+                                </div> 
+                                <div className="row ">
+                                    <div className="col-md-12 d-flex flex-row ">
+                                      <div>
+                                        <p>Following: {users.followings.length}</p>
+                                      </div>
+                                        <div style={{cursor:'pointer'}}></div>
                                     </div>
                                 </div> 
                             </div>
@@ -124,6 +152,15 @@ const ViewProfile = ({p}) => {
                                                     </div>
                                                     <div className="d-flex flex-column  justify-content-center  my-2">
                                                         <p>{post.article}</p>
+                                                         <div className="col-1 d-flex flex-row align-items-center ">
+                                                          
+                                                          <i onClick={()=>getLikes(post._id)}>
+                                                             {
+                                                                likes ? <i className="bi bi-suit-heart-fill mx-2" style={{"color":"red"}}></i> :<i className="bi bi-suit-heart-fill mx-2" ></i>
+                                                             }
+                                                            </i> 
+                                                          <div className="mt-3"> <p>{post.likes.length}</p></div>
+                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
